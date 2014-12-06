@@ -1,6 +1,5 @@
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 import javax.imageio.ImageIO;
 
@@ -18,16 +17,17 @@ public class ImageSets {
  
  public static void init()
  {
-	 //because we can't put ImageIO.read outside of a method, where we can exception handle
+ 	//turned file path to URLs since github can't upload pictures. not guaranteed to work.
   try {
-   walk[0]=ImageIO.read(new File("stickfigure.png"));
-   walk[1]=ImageIO.read(new File("stickfigure1.png"));
+   walk[0]=ImageIO.read(new URL("https://cloud.githubusercontent.com/assets/8552282/5325501/5cc5a396-7caa-11e4-9f05-1662361a6899.png"));
+   walk[1]=ImageIO.read(new URL("https://cloud.githubusercontent.com/assets/8552282/5325503/61dc8b38-7caa-11e4-85b5-d14e5d69335b.png"));
    
-   stand[0]=ImageIO.read(new File("stickfigure.png"));
+   stand[0]=ImageIO.read(new URL("https://cloud.githubusercontent.com/assets/8552282/5325501/5cc5a396-7caa-11e4-9f05-1662361a6899.png"));
    
-   wave[0]=ImageIO.read(new File("stickfigure.png"));
-   wave[1]=ImageIO.read(new File("stickfigure2.png"));
+   wave[0]=ImageIO.read(new URL("https://cloud.githubusercontent.com/assets/8552282/5325501/5cc5a396-7caa-11e4-9f05-1662361a6899.png"));
+   wave[1]=ImageIO.read(new URL("https://cloud.githubusercontent.com/assets/8552282/5325504/658bf084-7caa-11e4-9b90-e50d130aff00.png"));
    
+   //create flipped arrays for when it's going in the opposite direction
    for(int i = 0; i < walk.length; i++){walkR[i] = flip(walk[i]);}
    for(int i = 0; i < stand.length; i++){standR[i] = flip(stand[i]);}
    for(int i = 0; i < wave.length; i++){waveR[i] = flip(wave[i]);}
@@ -36,7 +36,7 @@ public class ImageSets {
   
  }
  
- private static BufferedImage flip(final BufferedImage b) {
+ private static BufferedImage flip(BufferedImage b) {
 
 	  final BufferedImage copy = new BufferedImage(b.getWidth(), b.getHeight(),
 	    BufferedImage.TYPE_INT_ARGB);
