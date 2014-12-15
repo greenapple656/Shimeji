@@ -17,8 +17,9 @@ public class Mascot extends JFrame {
 			BufferedImage.TYPE_INT_ARGB);
 	private boolean flipped = false;
 
-	public Mascot(BufferedImage initi) {
-		image = initi;
+	public void init()
+	{
+		image = ImageSets.stand[0];
 		// window size = the image's size
 		this.setSize(image.getWidth(), image.getHeight());
 		// currently, sets x to half of screen
