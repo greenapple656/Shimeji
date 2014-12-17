@@ -16,10 +16,26 @@ public class Mascot extends JFrame {
 	private BufferedImage image = new BufferedImage(1, 1,
 			BufferedImage.TYPE_INT_ARGB);
 	private boolean flipped = false;
+	private ImageSets anims = new ImageSets();
 
-	public void init()
-	{
-		image = ImageSets.stand[0];
+	//constructors
+	public Mascot(){init();}
+	public Mascot(ImageSets i){anims=i;init();}
+	
+	//gets and sets
+	public void setImage(BufferedImage bi) {
+		if (!bi.equals(null)) {
+			ImageIcon pic = new ImageIcon(bi);
+			JLabel back = new JLabel(pic);
+			this.setContentPane(back);
+			this.setVisible(true);
+		}
+	}
+	public ImageSets getImageSet(){return anims;}
+	
+	//methods
+	public void init() {
+		image = anims.stand[0];
 		// window size = the image's size
 		this.setSize(image.getWidth(), image.getHeight());
 		// currently, sets x to half of screen
@@ -29,8 +45,8 @@ public class Mascot extends JFrame {
 				.getMaximumWindowBounds().width / 2, GraphicsEnvironment
 				.getLocalGraphicsEnvironment().getMaximumWindowBounds().height
 				- image.getHeight());
-		//make image sets
-		ImageSets.init();
+		// make image sets
+		anims.init();
 		// draws image on window
 		this.setContentPane(new JLabel(new ImageIcon(image)));
 
@@ -46,16 +62,6 @@ public class Mascot extends JFrame {
 		this.repaint();
 	}
 
-	public void setImage(BufferedImage bi) {		
-		if(!bi.equals(null))
-		{
-			ImageIcon pic = new ImageIcon(bi);
-			JLabel back = new JLabel(pic);
-			this.setContentPane(back);
-			this.setVisible(true);
-		}		
-	}
-	
 	public void nextAction() {
 		Random random = new Random();
 		int num = random.nextInt(3);
@@ -82,6 +88,7 @@ public class Mascot extends JFrame {
 		}
 	}
 
+	//actions
 	public void stand() {
 
 		Random random = new Random();
@@ -101,7 +108,7 @@ public class Mascot extends JFrame {
 				.getLocalGraphicsEnvironment().getMaximumWindowBounds().width - this
 				.getWidth()))
 				: (this.getX() > 0)) {
-			for (BufferedImage b : flipped ? ImageSets.walkR : ImageSets.walk) {
+			for (BufferedImage b : flipped ? anims.walkR : anims.walk) {
 				this.setImage(b);
 				this.setLocation(
 						(flipped ? this.getX() + 10 : this.getX() - 10),
@@ -121,7 +128,7 @@ public class Mascot extends JFrame {
 		Random random = new Random();
 		int keep = random.nextInt(8);
 		while (keep != 0) {
-			for (BufferedImage b : flipped ? ImageSets.waveR : ImageSets.wave) {
+			for (BufferedImage b : flipped ? anims.waveR : anims.wave) {
 				this.setImage(b);
 				Thread.sleep(300);
 			}
@@ -135,21 +142,21 @@ public class Mascot extends JFrame {
 	public void fall() {
 		while (this.getY() > (GraphicsEnvironment.getLocalGraphicsEnvironment()
 				.getMaximumWindowBounds().height - this.getHeight())) {
-			this.setImage(flipped ? ImageSets.fallR[0] : ImageSets.fall[0]);
+			this.setImage(flipped ? anims.fallR[0] : anims.fall[0]);
 			this.setLocation(this.getLocation().x, this.getLocation().y - 10);
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
 			}
 		}
-		if (ImageSets.fall.length > 1) {
+		if (anims.fall.length > 1) {
 			fallComplete();
 		}
 		nextAction();
 	}
 
 	private void fallComplete() {
-		for (BufferedImage b : flipped ? ImageSets.fallR : ImageSets.fall) {
+		for (BufferedImage b : flipped ? anims.fallR : anims.fall) {
 			this.setImage(b);
 			try {
 				Thread.sleep(30);
@@ -159,43 +166,6 @@ public class Mascot extends JFrame {
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
-		}
-	}
-
-	class MouseInputListener implements MouseListener, MouseMotionListener {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			System.out.println("Clicked");
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-		}
-
-		@Override
-		public void mouseMoved(MouseEvent e) {
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			Mascot.this.setImage(ImageSets.stand[0]);
-			Mascot.this.setLocation(e.getLocationOnScreen().x - e.getX(),
-					e.getLocationOnScreen().y - e.getY());
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			fall();
-		}
-
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			Mascot.this.setLocation(e.getLocationOnScreen().x - e.getX(),
-					e.getLocationOnScreen().y - e.getY());
 		}
 	}
 
