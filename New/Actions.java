@@ -61,7 +61,7 @@ public class Actions {
 	
 	public static void setCurrentMascot(Mascot m){currentMascot = m;}
 	
-	//the methods that the actions refer to. Probably a better way to do this.
+	//the methods that the actions refer to. Probably there is a better way to do this.
 	public void standm(BufferedImage[] bi) {
 		Random random = new Random();
 		// pauses for random time between 0.5 second and 2.5 seconds
@@ -91,10 +91,12 @@ public class Actions {
 			}
 		}
 		currentMascot.setImage(bi[0]);
+		//ignore this. i was having a private battle on whether it should still continue walking to the other side
+		//once it reached an edge
+		
 		//walk.setContinue(random.nextInt(30));
 		walk.setContinue(0);
-	}//no I muted it. the problem is probably different java versions
-	//unmute so i can explain //i did 
+	}
 
 	public void wavem(BufferedImage[] bi) throws InterruptedException {
 		Random random = new Random();
@@ -145,7 +147,13 @@ class Action
 	private BufferedImage[] imageSet;
 	private BufferedImage[] imageSetR; //flipped imageSet
 	private boolean flipped;
-	private int cont=1; //if the action will continue
+	private int cont=1; //flag for the mascot and Actions class to know if it will continue the action.
+	                    //if cont = 0, will not continue. each of the actions in actionList either sets it to zero
+	                    //when finished, or sets it to a random value between zero and some other number to decide
+	                    //if it will continue.
+	                    
+	                    //in the original, there was a random number set at the end of each for loop of each action, and
+	                    //if(that number == 0){nextAction();}, and this is the same thing.
 	
 	public Action(Method mi, BufferedImage[] bi) 
 	{	
