@@ -13,22 +13,28 @@ import javax.imageio.ImageIO;
 //please come up with better idea for this. 
 public class Actions {
 	
+	//this is basically a static class - we wont' make any instances of it, 
+	//so currentMascot is the mascot that will be doing the actions. (think: Actions = the only enzyme, currentMascot = current substrate)
+	//will be used when we make the launcher and there are multiple mascots.
 	private static Mascot currentMascot;
 	
+	//declaring the image sets
 	private static BufferedImage[] walki = new BufferedImage[2];
 	private static BufferedImage[] standi = new BufferedImage[1];
 	private static BufferedImage[] wavei = new BufferedImage[2];
 	private static BufferedImage[] falli = new BufferedImage[1];
 	
+	//declaring the actions
 	private static Action walk;
 	private static Action stand;
 	private static Action wave;
 	
+	//the only public instance variable - should we keep it public or make a get and set for it?
+	//conglomerates all of the actions into one thing
 	public static Action[] actionList = new Action[3];
 
 	public static void init() {
-		// because we can't put ImageIO.read outside of a method, where we can
-		// exception handle
+		// puts images in empty image sets. Because Eclipse whines when we don't put it here.
 		try {
 			walki[0] = ImageIO.read(new File("stickfigure.png"));
 			walki[1] = ImageIO.read(new File("stickfigure1.png"));
@@ -41,6 +47,7 @@ public class Actions {
 			falli[0] = ImageIO.read(new File("stickfigure1.png"));
 		} catch (IOException e) {e.printStackTrace();}
 		
+		//specifies the actions, puts them in actionList
 		try{
 			walk = new Action(Actions.class.getMethod("walkm", new Class[]{BufferedImage[].class}), walki);
 			stand = new Action(Actions.class.getMethod("standm", new Class[]{BufferedImage[].class}), standi);
@@ -54,6 +61,7 @@ public class Actions {
 	
 	public static void setCurrentMascot(Mascot m){currentMascot = m;}
 	
+	//the methods that the actions refer to. Probably a better way to do this.
 	public void standm(BufferedImage[] bi) {
 		Random random = new Random();
 		// pauses for random time between 0.5 second and 2.5 seconds
@@ -130,13 +138,14 @@ public class Actions {
 	*/
 }
 
+//a method coupled with an imageSet.
 class Action
 {
 	private Method method;
 	private BufferedImage[] imageSet;
-	private BufferedImage[] imageSetR;
+	private BufferedImage[] imageSetR; //flipped imageSet
 	private boolean flipped;
-	private int cont=1;
+	private int cont=1; //if the action will continue
 	
 	public Action(Method mi, BufferedImage[] bi) 
 	{	
@@ -146,6 +155,7 @@ class Action
 		for(int i = 0; i < imageSet.length; i++) {imageSetR[i] = flip(imageSet[i]);}
 	}
 	
+	//gets and sets
 	public boolean getFlipped(){return flipped;}	
 	public BufferedImage[] getImageSet(){return imageSet;}
 	public BufferedImage[] getImageSetR(){return imageSetR;}
@@ -153,6 +163,8 @@ class Action
 	
 	public void setContinue(int num){cont = num;}
 	
+	//makes the mascot do the action.
+	//more specifically, calls the specified method in Actions class. it is the static method there that actually makes the mascot do stuff.
 	public void go()
 	{
 		Random random = new Random();
@@ -164,6 +176,8 @@ class Action
             e.printStackTrace();}
 	}
 	
+	
+	//in order to make flipped image set
 	private static BufferedImage flip(final BufferedImage b) {
 
 		final BufferedImage copy = new BufferedImage(b.getWidth(),
