@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 //please come up with better idea for this. 
 public class Actions {
 	
-	//this is basically a static class - we wont' make any instances of it, 
+	//this is basically a static class - we won't make any instances of it, 
 	//so currentMascot is the mascot that will be doing the actions. (think: Actions = the only enzyme, currentMascot = current substrate)
 	//will be used when we make the launcher and there are multiple mascots.
 	private static Mascot currentMascot;
